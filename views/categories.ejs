@@ -1,0 +1,127 @@
+<%- include('template/header'); -%>
+
+<!-- Webpage main content -->
+<div class="container-fluid">
+    <!-- Category list -->
+    <div class="row mx-1 my-2">
+        <ul class="nav nav-underline nav-fill">
+            <li class="nav-item">
+                <a role="button" href="/categories/painting" class="nav-link <% if (selectedCategory=="painting") { %> active <% } %>" id="paintingBtn">Painting</a>
+            </li>
+            <li class="nav-item">
+                <a role="button" href="/categories/drawing" class="nav-link <% if (selectedCategory=="drawing") { %> active <% } %>" id="drawingBtn">Drawing</a>
+            </li>
+            <li class="nav-item">
+                <a role="button" href="/categories/crafting" class="nav-link <% if (selectedCategory=="crafting") { %> active <% } %>" id="craftingBtn">Crafting</a>
+            </li>
+            <li class="nav-item">
+                <a role="button" href="/categories/paper" class="nav-link <% if (selectedCategory=="paper") { %> active <% } %>" id="paperBtn">Pads and Papers</a>
+            </li>
+            <li class="nav-item">
+                <a role="button" href="/categories/other" class="nav-link <% if (selectedCategory=="other") { %> active <% } %>" id="otherBtn">Others</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Categorized content -->
+    <div class="row my-2 mt-5 mx-auto">
+        <!-- Advanced filter, with accordion -->
+        <div class="accordion col-md-2">
+            <h5 class="text-center">Advanced Filters</h5>
+            <div class="accordion-item mb-2" id="advancedFilterGroup">
+                <div class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Brand
+                    </button>
+                </div>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#advancedFilterGroup">
+                    <div class="accordion-body">
+                        <div class="mb-2">
+                            <input class="form-check-input" type="checkbox" value="" id="">
+                            <label class="form-check-label" for="">Mont Marte</label>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-check-input" type="checkbox" value="" id="">
+                            <label class="form-check-label" for="">Holbein</label>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-check-input" type="checkbox" value="" id="">
+                            <label class="form-check-label" for="">Matisse</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item mb-2" id="advancedFilterGroup">
+                <div class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        Price
+                    </button>
+                </div>
+                <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#advancedFilterGroup">
+                    <div class="accordion-body">
+                        <div class="mb-2">
+                            <input class="form-check-input" type="radio" name="optPriceRange" value="allPriceRange" id="allPriceRange" checked>
+                            <label class="form-check-label" for="allPriceRange">All price</label>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-check-input" type="radio" name="optPriceRange" value="lowPriceRange" id="lowPriceRange">
+                            <label class="form-check-label" for="lowPriceRange">Under $20</label>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-check-input" type="radio" name="optPriceRange" value="lowPriceRange" id="midPriceRange">
+                            <label class="form-check-label" for="lowPriceRange">$20 - $50</label>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-check-input" type="radio" name="optPriceRange" value="midPriceRange" id="midHighPriceRange">
+                            <label class="form-check-label" for="midPriceRange">$50 - $100</label>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-check-input" type="radio" name="optPriceRange" value="highPriceRange" id="highPriceRange">
+                            <label class="form-check-label" for="highPriceRange">Above $100</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Filtered products -->
+        <div class="col-md-10">
+            <div id="productList" class="row rounded">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-4">
+                    <% products.forEach(function (product) { %>
+                        <div class="col d-flex align-items-stretch">
+                            <div class="card w-100" onmouseover="highlightProduct(this)" onmouseleave="removeHighlight(this)">
+                                <div style="transform: rotate(0);">
+                                    <img class="card-img-top" 
+                                        src="/<%= product.src %>" 
+                                        height="300" alt="Card image top">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><%= product.name %></h6>
+                                        <p class="card-text text-primary">$<%= product.price %></p>
+                                    </div>
+                                    <a href="/categories/paper/view/<%= product.id %>" class="stretched-link"></a>
+                                </div>
+
+                                <div class="card-footer">
+                                    <a href="/categories/paper/view/<%= product.id %>" class="btn btn-info float-start">View</a>
+                                    <a href="#" class="btn btn-warning float-end">Add <i class="bi bi-cart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function highlightProduct(element) {
+        element.classList.add("shadow");
+        element.classList.add("border-primary");
+    }
+
+    function removeHighlight(element) {
+        element.classList.remove("shadow");
+        element.classList.remove("border-primary");
+    }
+</script>
+<%- include('template/footer'); -%>

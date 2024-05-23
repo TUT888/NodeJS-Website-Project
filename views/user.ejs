@@ -1,0 +1,42 @@
+<%- include('template/header'); -%>
+
+<!-- Webpage main content -->
+<div class="container mb-4 w-75">
+    <div class="text-center">
+        <div class="my-5 p-5 border border-success rounded">
+            <h3 class="text-success">Welcome back <strong>
+                    <%= user.name %>
+                </strong>!</h3>
+            <p>
+                Feel free to browse anything you want! <br>
+                Remember to check the news, <br>
+                we always update new products at the start of a month!
+            </p>
+        </div>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmLogoutModal">
+            Logout
+        </button>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="confirmLogoutModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Confirm logout</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to logout?
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
+                <a type="button" class="btn btn-danger" href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+< <%- include('template/footer'); -%>

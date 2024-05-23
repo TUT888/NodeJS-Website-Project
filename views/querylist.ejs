@@ -1,0 +1,54 @@
+<%- include('template/header'); -%>
+
+<!-- Webpage main content -->
+<div class="container mb-4">
+    <h3 class="text-center my-2">
+        Your submitted queries
+    </h3>
+    
+    <a href="/queryform" class="btn btn-primary my-2">Back</a>
+    <!-- List of submitted query -->
+    <% if (error) { %>
+        <p class="font-weight-bold">There is an error occurred when retrieving data.</p>
+        <p class="text-danger"><%= error.message %></p>
+    <% } else if (queries.length === 0) { %>
+        <p class="font-weight-bold">
+            No query was submitted. Submit a query then it will be displayed here
+        </p>
+    <% } else { %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fullname</th>
+                    <th>Contact</th>
+                    <th>Address</th>
+                    <th>Location</th>
+                    <th>Query Type</th>
+                    <th>Query detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% queries.forEach(function (query) { %>
+                    <tr>
+                        <th><%= query.id %></th>
+                        <td>
+                            <%= (query.fname).concat(" ", query.lname)  %>
+                        </td>
+                        <td>
+                            <%= (query.mobile).concat(" - ", query.email) %>
+                        </td>
+                        <td><%= query.address %></td>
+                        <td>
+                            <%= (query.city).concat(" - ", query.state, " - ", query.postcode) %>
+                        </td>
+                        <td><%= query.querytype %></td>
+                        <td><%= query.querydetail %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } %>
+</div>
+
+<%- include('template/footer'); -%>

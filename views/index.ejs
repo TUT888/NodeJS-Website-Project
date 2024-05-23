@@ -1,0 +1,61 @@
+<%- include('template/header'); -%>
+
+<!-- Webpage main content -->
+<!-- Carousel sliding & brief introduction -->
+<div class="container my-2" >
+    <div id="carousel_sliding" class="carousel slide" data-bs-ride="true" >
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carousel_sliding" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
+            <button type="button" data-bs-target="#carousel_sliding" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carousel_sliding" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="2000">
+                <img src="images/carousels/frankie-cordoba-fPYJeMmYWM4-unsplash.jpg" class="d-block w-100 rounded" alt="Carousel 1">
+                <div class="carousel-caption">
+                    <h5>Be creative!</h5>
+                    <p>Feel free to create, we are here to support you!</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="images/carousels/marty-o-neill-Jo-ypJVt8gQ-unsplash.jpg" class="d-block w-100 rounded" alt="Carousel 2">
+                <div class="carousel-caption">
+                    <h5>Let's try new things, why not?</h5>
+                    <p>Try new things, challenge your self!</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="images/carousels/tim-mossholder-hrm0hf8pCdU-unsplash.jpg" class="d-block w-100 rounded" alt="Carousel 3">
+                <div class="carousel-caption">
+                    <h5>Art is relaxing!</h5>
+                    <p>Sit down, open your book, get your pen, and do some random drawing!</p>
+                </div>
+            </div>
+        </div>
+        <!-- Left & right controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel_sliding" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel_sliding" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<!-- Brief introduction -->
+<div class="containter my-2 text-center ">
+    <div class="pt-2">
+        <h5>About Deakin Art Supplies</h5>
+        <p class="text-secondary">
+            This website is created by Deakin's student. <br>
+            Sample images displayed in this website are free images, which can be downloaded from unsplash.com <br>
+            Product images are collected from different sources, which are real products sold by brands.
+        </p>
+    </div>
+</div>
+
+<%- include('template/footer'); -%>

@@ -1,0 +1,86 @@
+<%- include('template/header'); -%>
+
+<!-- Webpage main content -->
+<div class="container-fluid" onload="loadQuantity()">
+    <div class="mx-3 my-2">
+        <button onclick="history.back()" class="btn btn-primary">Back</button>
+    </div>
+    <div class="row my-2 mx-3 p-5 border">
+        <% if (products.length===0) { %>
+            <div class="col-md-5 d-flex justify-content-center">
+                <img src="/images/sample.jpg" class="img-fluid">
+            </div>
+        <% } else { %>
+            <div class="col-md-5 d-flex justify-content-center">
+                <img src="/<%= products[0].src %>" class="img-fluid" style="max-height: 300px;">
+            </div>
+        <% } %>
+        <!-- Product detail -->
+        <div class="col-md-7">
+            <% if (products.length===0) { %>
+                <h3>You selected unknown product</h3>
+                <p>Maybe there is an error when getting product detail</p>
+                <p>Please try again later, or contact us for support</p>
+            <% } else { %>
+                <h1><%= products[0].name %></h1>
+                <p class="fs-3">$<%= products[0].price %></p>
+                <div class="row fs-6">
+                    <div class="col-3 col-md-4"><strong>Product type</strong></div>
+                    <div class="col-9 col-md-8"><%= products[0].type %></div>
+                    <div class="w-100 my-2"></div>
+                    <div class="col-12"><strong>Description</strong></div>
+                    <div class="col-12">dfadf<%= products[0].desc %></div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-4">
+                        <div class="input-group text-center">
+                            <button class="btn btn-danger" type="button" id="decreaseQtyBtn"
+                            onclick="decreaseQuantity()" disabled>
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input type="text" class="form-control text-center" value="1" id="inputQty" name="inputQty">
+                            <button class="btn btn-success" type="button" id="increaseQtyBtn"
+                            onclick="increaseQuantity()">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <a href="#" class="btn btn-warning">
+                            <i class="bi bi-cart"></i> Add to cart
+                        </a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+    function decreaseQuantity() {
+        let inputQtyElement = document.getElementById("inputQty");
+        let previousVal = parseInt(inputQtyElement.value);
+        let newVal = previousVal - 1;
+
+        if ( newVal<1 ) {
+            inputQtyElement.value = 1;
+        } else if ( newVal==1 ) {
+            document.getElementById("decreaseQtyBtn").disabled = true;
+            inputQtyElement.value = previousVal - 1;
+        } else {
+            inputQtyElement.value = previousVal - 1;
+        }
+    }
+
+    function increaseQuantity() {
+        let inputQtyElement = document.getElementById("inputQty");
+        let previousVal = parseInt(inputQtyElement.value);
+        let newVal = previousVal + 1;
+
+        inputQtyElement.value = newVal;
+        if ( newVal>1 ) {
+            document.getElementById("decreaseQtyBtn").disabled = false;
+        }
+    }
+</script>
+<%- include('template/footer'); -%>

@@ -1,0 +1,279 @@
+<%- include('template/header'); -%>
+
+<!-- Webpage main content -->
+<div class="container mb-4">
+    <div class="mb-2">
+        <h3 class="text-center my-2">
+            Have a question? <br>
+            Don't hesitate to send query to us!
+        </h3>
+        <div class="d-flex justify-content-end">
+            <a href="/querylist" >
+                > View submitted queries
+            </a>
+        </div>
+    </div>
+
+    <% if (isSubmit) { %>
+        <h4 class="text-success p-2 text-center bg-success-subtle w-75 mx-auto rounded-pill">
+            Your query sent successfully! <br> 
+            We will review and contact you as soon as possible
+        </h4>
+    <% } %>
+    <form action="/queryform" name="queryForm" 
+        id="queryForm" 
+        method="post"
+        onsubmit="return validateQueryForm()" onreset="resetQueryForm()" 
+        class="row border border-secondary-subtle rounded p-3">
+        <!-- Contact details -->
+        <div class="row mb-4 mt-2">
+            <h6 class="text-primary-emphasis">Contact detail</h6>
+            <div class="col-md-6 mb-2">
+                <label class="form-label" for="firstname">Firstname</label>
+                <input class="form-control" type="text" id="firstname" name="firstname">
+                <div id="inputFirstnameMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label" for="surname">Surname</label>
+                <input class="form-control" type="text" id="surname"  name="surname">
+                <div id="inputSurnameMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label" for="mobile">Mobile</label>
+                <input class="form-control" type="tel" id="mobile" 
+                    placeholder="+64 xxxx xxx xxx"  
+                    name="mobile">
+                <div id="inputMobileMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="email" id="email"  name="email">
+                <div id="inputEmailMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <label class="form-label" for="address">Address</label>
+                <input class="form-control" type="text" id="address" name="address">
+                <div id="inputAddressMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label" for="city">City</label>
+                <input class="form-control" type="text" id="city"  name="city">
+                <div id="inputCityMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="form-label" for="states">State</label>
+                <select class="form-select" id="states"  name="states">
+                    <option disabled selected>Choose...</option>
+                    <option value="nsw">New South Wales</option>
+                    <option value="vic">Victoria</option>
+                    <option value="qld">Queensland</option>
+                    <option value="wa">Western Australia</option>
+                    <option value="sa">South Australia</option>
+                    <option value="tas">Tasmania</option>
+                </select>
+                <div id="inputStateMess" class="form-text d-none"></div>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="form-label" for="postcode">Postcode</label>
+                <input class="form-control" type="text" id="postcode"  name="postcode">
+                <div id="inputPostcodeMess" class="form-text d-none"></div>
+            </div>
+        </div>
+        
+        <!-- Feedback/query detail -->
+        <h6 class="text-primary-emphasis">Your query type & details</h6>
+        <div class="row mb-4">
+            <div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="queryProduct">Product question</label>
+                    <input class="form-check-input" type="radio" id="queryProduct" name="queryType" value="queryProduct">
+                </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="queryFeedback">Product feedback</label>
+                    <input class="form-check-input" type="radio" id="queryFeedback" name="queryType" value="queryFeedback">
+                </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="queryDelivery">Product delivery</label>
+                    <input class="form-check-input" type="radio" id="queryDelivery" name="queryType" value="queryDelivery">
+                </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label" for="queryOther">Other</label>
+                    <input class="form-check-input" type="radio" id="queryOther" name="queryType" value="queryOther">
+                </div>
+            </div>
+            <div id="inputQueryTypeMess" class="form-text d-none"></div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12 mb-2">
+                <label class="form-label text-primary-emphasis h6" for="queryDetail">Enter your query here</label>
+                <textarea class="form-control" id="queryDetail" name="queryDetail" rows="3"></textarea>
+                <div id="inputQueryDetailMess" class="form-text d-none"></div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="row mb-4 justify-content-end">
+            <button type="reset" class="btn btn-primary col-auto ">Reset</button>
+            <button type="submit" class="btn btn-success col-auto mx-2">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    function validateQueryForm() {
+        // Patterns for validation
+        let emailPattern = /[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/;
+        let notDigitPattern = /\D/;
+        let phonePattern = /\d{10}/;
+        let postcodePattern = /\d{4}/;
+        let stateList = ["nsw", "vic", "qld", "wa", "sa", "tas"];
+        let queryTypeList = ["queryProduct", "queryFeedback", "queryDelivery", "queryOther"];
+
+        // Get the message element
+        let inputFirstnameMess= document.getElementById("inputFirstnameMess");
+        let inputSurnameMess= document.getElementById("inputSurnameMess");
+        let inputMobileMess= document.getElementById("inputMobileMess");
+        let inputEmailMess= document.getElementById("inputEmailMess");
+        let inputAddressMess = document.getElementById("inputAddressMess");
+        let inputCityMess= document.getElementById("inputCityMess");
+        let inputStateMess= document.getElementById("inputStateMess");
+        let inputPostcodeMess= document.getElementById("inputPostcodeMess");
+        let inputQueryTypeMess = document.getElementById("inputQueryTypeMess");
+        let inputQueryDetailMess = document.getElementById("inputQueryDetailMess");
+
+        // Get the form element
+        let formElement = document.forms["queryForm"];
+        let inputFirstname = formElement["firstname"].value;
+        let inputSurname = formElement["surname"].value;
+        let inputMobile = formElement["mobile"].value;
+        let inputEmail = formElement["email"].value;
+        let inputAddress = formElement["address"].value;
+        let inputCity = formElement["city"].value;
+        let inputState = formElement["states"].value;
+        let inputPostcode = formElement["postcode"].value;
+        let inputQueryType = formElement["queryType"].value;
+        let inputQueryDetail = formElement["queryDetail"].value;
+
+        // Validate input firstname & lastname
+        if ( inputFirstname=="" ) {
+            showError(inputFirstnameMess, "You did not enter your firstname", false);
+            return false;
+        } else {
+            hideError(inputFirstnameMess);
+        }
+        if ( inputSurname=="" ) {
+            showError(inputSurnameMess, "You did not enter your surname", false);
+            return false;
+        } else {
+            hideError(inputSurnameMess);
+        }
+        
+        // Validate input phone number
+        let charInPhone = notDigitPattern.exec(inputMobile);
+        if (charInPhone) {
+            showError(inputMobileMess, `Contains character '${charInPhone[0]}'. Numbers only!`, false);
+            return false;
+        } else if (inputMobile.length!=10 || !phonePattern.test(inputMobile) ) {
+            showError(inputMobileMess, "Phone number should be in 10 digits", false);
+            return false;
+        } else {
+            hideError(inputMobileMess);
+        }
+
+        // Validate input email
+        if ( !emailPattern.test(inputEmail) ) {
+            showError(inputEmailMess, "You have entered invalid email", false);
+            return false;
+        } else {
+            hideError(inputEmailMess);
+        }
+
+        // Validate city
+        if ( inputAddress=="" ) {
+            showError(inputAddressMess, "You did not enter your address", false);
+            return false;
+        } else {
+            hideError(inputAddressMess);
+        }
+
+        // Validate city
+        if ( inputCity=="" ) {
+            showError(inputCityMess, "You did not enter your city", false);
+            return false;
+        } else {
+            hideError(inputCityMess);
+        }
+
+        // Validate state
+        if ( !stateList.includes(inputState) ) {
+            showError(inputStateMess, "Please choose a valid state", false);
+            return false;
+        } else {
+            hideError(inputStateMess);
+        }
+
+        // Validate postcode
+        let charInPostcode = notDigitPattern.exec(inputPostcode);
+        if (charInPostcode) {
+            showError(inputPostcodeMess, `Contains character '${charInPostcode[0]}'. Numbers only!`, false);
+            return false;
+        } else if (inputPostcode.length!=4 || !postcodePattern.test(inputPostcode) ) {
+            showError(inputPostcodeMess, "Postcode should be in 4 digits", false);
+            return false;
+        } else {
+            hideError(inputPostcodeMess);
+        }
+
+        // Validate query type
+        if ( !queryTypeList.includes(inputQueryType) ) {
+            showError(inputQueryTypeMess, "Please choose a valid query type", false);
+            return false;
+        } else {
+            hideError(inputQueryTypeMess);
+        }
+
+        // Validate query detail
+        if ( inputQueryDetail=="" ) {
+            showError(inputQueryDetailMess, "Please enter your query in this field", false);
+            return false;
+        } else {
+            hideError(inputQueryDetailMess);
+        }
+        return true;
+        // document.getElementById("queryForm").submit();
+    }
+
+    function resetQueryForm() {
+        // Get the message element
+        document.getElementById("inputFirstnameMess").classList.add("d-none");
+        document.getElementById("inputSurnameMess").classList.add("d-none");
+        document.getElementById("inputMobileMess").classList.add("d-none");
+        document.getElementById("inputEmailMess").classList.add("d-none");
+        document.getElementById("inputAddressMess").classList.add("d-none");
+        document.getElementById("inputCityMess").classList.add("d-none");
+        document.getElementById("inputStateMess").classList.add("d-none");
+        document.getElementById("inputPostcodeMess").classList.add("d-none");
+        document.getElementById("inputQueryTypeMess").classList.add("d-none");
+        document.getElementById("inputQueryDetailMess").classList.add("d-none");
+    }
+
+    function showError(element, message, isSuccess) {
+        element.classList.remove("d-none");
+        element.innerHTML = message;
+        if (isSuccess) {
+            element.classList.remove("text-danger");
+            element.classList.add("text-success");
+        } else {
+            element.classList.remove("text-success");
+            element.classList.add("text-danger");
+        }
+    }
+
+    function hideError(element) {
+        element.classList.add("d-none");
+        element.classList.remove("text-danger");
+    }
+</script>
+
+<%- include('template/footer'); -%>
